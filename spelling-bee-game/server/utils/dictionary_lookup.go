@@ -20,13 +20,13 @@ var once sync.Once
 var instance *dictionary
 
 func (d dictionary) IsWord(word string) bool {
-	//TODO implement me
-	panic("implement me")
+	_, ok := (*d.words)[word]
+	return ok
 }
 
 func (d dictionary) IsPangram(word string) bool {
-	//TODO implement me
-	panic("implement me")
+	_, ok := (*d.pangrams)[word]
+	return ok
 }
 
 func (d dictionary) GetInstance() *dictionary {
