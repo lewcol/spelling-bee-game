@@ -1,44 +1,54 @@
 package utils
 
 import (
-	"encoding/json"
 	"fmt"
-	"os"
+	"sync"
 )
 
-type WordMap interface {
-	IsWord(word string) (bool, string)
-	IsPangram(word string) (bool, string)
-	GetLetters() []string
+type Dictionary interface {
+	IsWord(word string) bool
+	IsPangram(word string) bool
+	GetInstance() *dictionary
 }
 
-type wordMap struct {
-	validWords map[string]int
-	pangrams   map[string]int
+type dictionary struct {
+	words    *map[string]int
+	pangrams *map[string][]rune
 }
 
-func (w wordMap) IsWord(word string) (bool, string) {
+var once sync.Once
+var instance *dictionary
+
+func (d dictionary) IsWord(word string) bool {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (w wordMap) IsPangram(word string) (bool, string) {
-
-}
-
-func (w wordMap) GetLetters() []string {
+func (d dictionary) IsPangram(word string) bool {
 	//TODO implement me
 	panic("implement me")
 }
 
-func main() {
-	if words, err := openJsonAsMap("../wordlists/wordlist.txt"); err != nil {
-		fmt.Println(err)
-		return
-	}
+func (d dictionary) GetInstance() *dictionary {
+	if instance == nil {
+		once.Do(func() {
+			words, err := openJsonAsMap("../wordlists/words_dictionary.json", StringIntMap)
+			if err != nil {
+				fmt.Println(err)
+				instance = nil
+			}
 
-	if pangrams, err := openJsonAsMap("../wordlists/pangrams.txt"); err != nil {
-		fmt.Println(err)
-		return
+			pangrams, err := openJsonAsMap("../wordlists/pangrams.json", StringRuneSliceMap)
+			if err != nil {
+				fmt.Println(err)
+				instance = nil
+			}
+
+			instance = &dictionary{
+				words:    words.(*map[string]int),
+				pangrams: pangrams.(*map[string][]rune),
+			}
+		})
 	}
+	return instance
 }
