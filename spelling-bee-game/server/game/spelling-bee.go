@@ -10,6 +10,7 @@ type game struct {
 	word    string
 	letters map[rune]int
 	centre  rune
+	guessed map[string]int
 }
 
 func (g game) Score() int { return g.score }
@@ -20,7 +21,14 @@ func (g game) Letters() map[rune]int { return g.letters }
 
 func (g game) Centre() rune { return g.centre }
 
+func (g game) Guessed() map[string]int { return g.guessed }
+
 func (g game) Submit(s string) (string, int) {
+	// reject old guesses
+	if _, ok := g.guessed[s]; ok {
+		return "Already guessed", g.Score()
+	}
+
 	// reject words of less than 4 letters
 	i := len(s)
 	if i < 4 {
@@ -53,6 +61,9 @@ func (g game) Submit(s string) (string, int) {
 	}
 
 	// the word is valid
+	// add to previous guesses
+	g.guessed[s] = 1
+
 	// update scores for valid words
 	if i == 4 {
 		g.score += 1
@@ -70,7 +81,7 @@ func (g game) Submit(s string) (string, int) {
 	return "", g.Score()
 }
 
-func (g game) New() Game {
+func New() Game {
 	var dict utils.Dictionary
 	dict = dict.GetInstance()
 	word, letters, centre := dict.GetWordAndLetters()

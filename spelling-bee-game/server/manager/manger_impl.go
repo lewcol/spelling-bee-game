@@ -1,0 +1,48 @@
+package manager
+
+import (
+	"spelling-bee-game/server/game"
+	"sync"
+)
+
+var (
+	once     sync.Once
+	instance Manager
+)
+
+type manager struct {
+	mutex  sync.RWMutex
+	nextId int
+	games  map[int]game.Game
+}
+
+func (m *manager) Create() (int, game.Game, error) {
+	g := game.New()
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+	id := m.nextId
+	m.games[id] = g
+	m.nextId++
+	return id, g, nil
+}
+
+func (m *manager) GetGame(id int) (game.Game, bool) {
+	m.mutex.RLock()
+	defer m.mutex.RUnlock()
+	g, ok := m.games[id]
+	return g, ok
+}
+
+func (m *manager) End(id int) error {
+	m.games[id] = nil
+	return nil
+}
+
+func GetManager() Manager {
+	once.Do(func() {
+		instance = &manager{
+			games: make(map[int]game.Game),
+		}
+	})
+	return instance
+}

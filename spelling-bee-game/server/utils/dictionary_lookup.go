@@ -10,13 +10,13 @@ import (
 
 var (
 	once     sync.Once
-	instance *dictionary
+	instance Dictionary
 )
 
 type Dictionary interface {
 	IsWord(word string) bool
 	IsPangram(word string) bool
-	GetInstance() *dictionary
+	GetInstance() Dictionary
 	GetWordAndLetters() (string, map[rune]int, rune)
 }
 
@@ -47,7 +47,7 @@ func (d dictionary) GetWordAndLetters() (string, map[rune]int, rune) {
 	return word, letters, centre
 }
 
-func (d dictionary) GetInstance() *dictionary {
+func (d dictionary) GetInstance() Dictionary {
 	once.Do(func() {
 		words, err := openJsonAsMap("../wordlists/words_dictionary.json", StringIntMap)
 		if err != nil {
