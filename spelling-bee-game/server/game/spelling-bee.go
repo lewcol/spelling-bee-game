@@ -1,6 +1,7 @@
 package game
 
 import (
+	"maps"
 	"spelling-bee-game/server/utils"
 	"strings"
 )
@@ -18,6 +19,18 @@ func (g game) Score() int { return g.score }
 func (g game) Word() string { return g.word }
 
 func (g game) Letters() map[rune]int { return g.letters }
+
+func (g game) PrintableLettersWithCentre() string {
+	var letters []string
+	for k := range maps.Keys(g.Letters()) {
+		if k == g.Centre() {
+			letters = append(letters, "["+string(k)+"]")
+		} else {
+			letters = append(letters, string(k))
+		}
+	}
+	return strings.Join(letters, " ")
+}
 
 func (g game) Centre() rune { return g.centre }
 

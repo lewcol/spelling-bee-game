@@ -16,14 +16,14 @@ type manager struct {
 	games  map[int]game.Game
 }
 
-func (m *manager) Create() (int, game.Game, error) {
+func (m *manager) Create() (int, game.Game) {
 	g := game.New()
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
 	id := m.nextId
 	m.games[id] = g
 	m.nextId++
-	return id, g, nil
+	return id, g
 }
 
 func (m *manager) GetGame(id int) (game.Game, bool) {
