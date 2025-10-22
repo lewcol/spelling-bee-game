@@ -1,6 +1,7 @@
 package manager
 
 import (
+	"fmt"
 	"spelling-bee-game/server/game"
 	"sync"
 )
@@ -23,6 +24,7 @@ func (m *manager) Create() (int, game.Game) {
 	id := m.nextId
 	m.games[id] = g
 	m.nextId++
+	fmt.Println("Created game of id ", id)
 	return id, g
 }
 
@@ -35,6 +37,7 @@ func (m *manager) GetGame(id int) (game.Game, bool) {
 
 func (m *manager) End(id int) error {
 	m.games[id] = nil
+	fmt.Println("Ended game of id ", id)
 	return nil
 }
 

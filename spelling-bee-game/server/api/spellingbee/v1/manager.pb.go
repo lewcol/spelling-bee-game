@@ -155,7 +155,7 @@ func (x *EndGameRequest) GetId() int32 {
 
 type EndGameResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Err           string                 `protobuf:"bytes,1,opt,name=err,proto3" json:"err,omitempty"`
+	Score         int32                  `protobuf:"varint,1,opt,name=score,proto3" json:"score,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -190,11 +190,11 @@ func (*EndGameResponse) Descriptor() ([]byte, []int) {
 	return file_server_api_spellingbee_v1_manager_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *EndGameResponse) GetErr() string {
+func (x *EndGameResponse) GetScore() int32 {
 	if x != nil {
-		return x.Err
+		return x.Score
 	}
-	return ""
+	return 0
 }
 
 type ScoreRequest struct {
@@ -399,9 +399,9 @@ const file_server_api_spellingbee_v1_manager_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x18\n" +
 	"\aletters\x18\x02 \x01(\tR\aletters\" \n" +
 	"\x0eEndGameRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id\"#\n" +
-	"\x0fEndGameResponse\x12\x10\n" +
-	"\x03err\x18\x01 \x01(\tR\x03err\"\x1e\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\"'\n" +
+	"\x0fEndGameResponse\x12\x14\n" +
+	"\x05score\x18\x01 \x01(\x05R\x05score\"\x1e\n" +
 	"\fScoreRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\"%\n" +
 	"\rScoreResponse\x12\x14\n" +

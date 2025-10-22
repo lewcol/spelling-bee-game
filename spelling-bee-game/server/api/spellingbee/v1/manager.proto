@@ -14,7 +14,7 @@ message CreateGameRequest {}
 message CreateGameResponse { int32 id = 1; string letters = 2; }
 
 message EndGameRequest { int32 id = 1; }
-message EndGameResponse { string err = 1; }
+message EndGameResponse { int32 score = 1; }
 
 message ScoreRequest { int32 id = 1; }
 message ScoreResponse { int32 score = 1; }
