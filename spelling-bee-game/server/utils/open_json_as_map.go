@@ -9,15 +9,15 @@ type WordMapType int
 
 const (
 	StringIntMap WordMapType = iota
-	StringRuneSliceMap
+	RuneIntMap
 )
 
 func wordMapFactory(w WordMapType) any {
 	switch w {
 	case StringIntMap:
 		return make(map[string]int)
-	case StringRuneSliceMap:
-		return make(map[string][]rune)
+	case RuneIntMap:
+		return make(map[rune]int)
 	default:
 		return nil
 	}

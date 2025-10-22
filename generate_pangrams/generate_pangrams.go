@@ -4,9 +4,7 @@ package main
 
 import (
 	"encoding/json"
-	"maps"
 	"os"
-	"slices"
 )
 
 /*
@@ -36,22 +34,22 @@ func openJsonAsMap(filename string) (map[string]int, error) {
 	return words, nil
 }
 
-func get_letters_if_pangram(w string) ([]rune, bool) {
-	unique_letters := map[int32]int{}
+func getLettersIfPangram(w string) (map[rune]int, bool) {
+	uniqueLetters := map[rune]int{}
 
 	for _, c := range w {
 		if c != 's' {
-			unique_letters[c] = 1
+			uniqueLetters[c] = 1
 		} else {
 			return nil, false
 		}
 	}
 
-	if len(unique_letters) != 7 {
+	if len(uniqueLetters) != 7 {
 		return nil, false
 	}
 
-	return slices.Collect(maps.Keys(unique_letters)), true
+	return uniqueLetters, true
 }
 
 func main() {
@@ -66,9 +64,9 @@ func main() {
 	}
 	defer file.Close()
 
-	pangrams := map[string][]rune{}
+	pangrams := map[string]map[rune]int{}
 	for k := range words {
-		if letters, ok := get_letters_if_pangram(k); ok {
+		if letters, ok := getLettersIfPangram(k); ok {
 			pangrams[k] = letters
 		}
 	}
