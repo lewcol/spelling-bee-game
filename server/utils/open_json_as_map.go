@@ -8,29 +8,22 @@ import (
 type WordMapType int
 
 const (
-	StringIntMap WordMapType = iota
-	StringMapRuneIntMap
+	StringIntMapType WordMapType = iota
+	StringMapRuneIntMapType
 )
 
-type WordMap interface {
-	Exists(key string) bool
-	GetValueFromKey(key string) (interface{}, bool)
-	GetKeys() []string
-	GetType() string
-}
-
-func wordMapFactory(w WordMapType) any {
+func wordMapFactory(w WordMapType) WordMap {
 	switch w {
-	case StringIntMap:
-		return &map[string]int{}
-	case StringMapRuneIntMap:
-		return &map[string]map[rune]int{}
+	case StringIntMapType:
+		return &StringIntMap{data: map[string]int{}}
+	case StringMapRuneIntMapType:
+		return &StringMapRuneIntMap{data: map[string]map[rune]int{}}
 	default:
 		return nil
 	}
 }
 
-func openJsonAsMap(filename string, w WordMapType) (any, error) {
+func openJsonAsMap(filename string, w WordMapType) (WordMap, error) {
 	file, err := os.Open(filename)
 	if err != nil {
 

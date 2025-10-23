@@ -19,8 +19,8 @@ type Dictionary interface {
 }
 
 type dictionary struct {
-	words    *map[string]int
-	pangrams *map[string]map[rune]int
+	words    WordMap
+	pangrams WordMap
 }
 
 func (d dictionary) IsWord(word string) bool {
@@ -47,21 +47,21 @@ func (d dictionary) GetWordAndLetters() (string, map[rune]int, rune) {
 
 func GetInstance() Dictionary {
 	once.Do(func() {
-		words, err := openJsonAsMap("./wordlists/words_dictionary.json", StringIntMap)
+		words, err := openJsonAsMap("./wordlists/words_dictionary.json", StringIntMapType)
 		if err != nil {
 			panic("Error loading dictionary: " + err.Error())
 			return
 		}
 
-		pangrams, err := openJsonAsMap("./wordlists/pangrams.json", StringMapRuneIntMap)
+		pangrams, err := openJsonAsMap("./wordlists/pangrams.json", StringMapRuneIntMapType)
 		if err != nil {
 			panic("Error loading dictionary: " + err.Error())
 			return
 		}
 
 		instance = &dictionary{
-			words:    words.(*map[string]int),
-			pangrams: pangrams.(*map[string]map[rune]int),
+			words:    words,
+			pangrams: pangrams,
 		}
 	})
 	return instance
