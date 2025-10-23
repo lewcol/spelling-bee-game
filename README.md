@@ -24,9 +24,9 @@ Create the wordlist as a JSON file of the following format:
   "wordtwo": 1
 }
 ```
-Name this file "words_dictionary.json" and place it in the spelling-bee-game/server/wordlists directory.
+Name this file "words_dictionary.json" and place it in the server/wordlists directory.
 ```bash
-mv words_dictionary.json spelling-bee-game/server/wordlists
+mv words_dictionary.json server/wordlists
 ```
 
 ## Running the Application
