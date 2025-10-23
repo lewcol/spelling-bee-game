@@ -12,6 +12,13 @@ const (
 	StringMapRuneIntMap
 )
 
+type WordMap interface {
+	Exists(key string) bool
+	GetValueFromKey(key string) (interface{}, bool)
+	GetKeys() []string
+	GetType() string
+}
+
 func wordMapFactory(w WordMapType) any {
 	switch w {
 	case StringIntMap:

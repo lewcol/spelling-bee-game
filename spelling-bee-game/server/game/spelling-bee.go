@@ -101,6 +101,9 @@ func (g game) Submit(s string) (string, int) {
 	}
 
 	// no pangram bonus
+	if i == 4 {
+		i = 1
+	}
 	return "Valid word scoring " + strconv.Itoa(i) + " points.", g.Score()
 }
 

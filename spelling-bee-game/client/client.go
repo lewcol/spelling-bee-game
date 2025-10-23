@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"spelling-bee-game/client/proxy"
 	managerpb "spelling-bee-game/server/api/spellingbee/v1"
 	"time"
 
@@ -23,11 +24,17 @@ func gameLoop(ctx context.Context, client managerpb.ManagerClient, game GameStat
 		var input string
 		_, err := fmt.Scanln(&input)
 		if err != nil {
-			panic(err)
+			if err.Error() == "unexpected newline" {
+				fmt.Println("Please enter a word.")
+				continue
+			} else {
+				panic(err)
+			}
 		}
 
 		// temporary, quit if input is "q"
 		if input == "q" {
+			println("Game Over! Score: ", game.score)
 			break
 		}
 
@@ -49,7 +56,7 @@ func main() {
 	}
 	defer conn.Close()
 
-	client := managerpb.NewManagerClient(conn)
+	client := proxy.NewClientProxy(conn, 1)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 300*time.Second)
 	defer cancel()
@@ -71,5 +78,4 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	println("Game Over! Score: ", game.score)
 }

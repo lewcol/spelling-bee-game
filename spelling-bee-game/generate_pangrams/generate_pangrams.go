@@ -7,17 +7,6 @@ import (
 	"os"
 )
 
-/*
-func is_pangram(w string) bool {
-	var unique_letters map[int32]int
-	for _, c := range w {
-		if _, ok := unique_letters[c]; ok {
-			return false
-		}
-	}
-	return true
-}*/
-
 func openJsonAsMap(filename string) (map[string]int, error) {
 	file, err := os.Open(filename)
 	if err != nil {
@@ -53,12 +42,12 @@ func getLettersIfPangram(w string) (map[rune]int, bool) {
 }
 
 func main() {
-	words, err := openJsonAsMap("../spelling-bee-game/server/wordlists/words_dictionary.json")
+	words, err := openJsonAsMap("../server/wordlists/words_dictionary.json")
 	if err != nil {
 		panic(err)
 	}
 
-	file, err := os.Create("../spelling-bee-game/server/wordlists/pangrams.json")
+	file, err := os.Create("../server/wordlists/pangrams.json")
 	if err != nil {
 		panic(err)
 	}
