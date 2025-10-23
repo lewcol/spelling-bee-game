@@ -8,7 +8,7 @@ import (
 
 var (
 	once     sync.Once
-	instance Manager
+	instance *manager
 )
 
 type manager struct {

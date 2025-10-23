@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"fmt"
 	"maps"
 	"math/rand/v2"
 	"slices"
@@ -10,19 +9,18 @@ import (
 
 var (
 	once     sync.Once
-	instance Dictionary
+	instance *dictionary
 )
 
 type Dictionary interface {
 	IsWord(word string) bool
 	IsPangram(word string) bool
-	GetInstance() Dictionary
 	GetWordAndLetters() (string, map[rune]int, rune)
 }
 
 type dictionary struct {
 	words    *map[string]int
-	pangrams *map[string][]rune
+	pangrams *map[string]map[rune]int
 }
 
 func (d dictionary) IsWord(word string) bool {
@@ -47,23 +45,23 @@ func (d dictionary) GetWordAndLetters() (string, map[rune]int, rune) {
 	return word, letters, centre
 }
 
-func (d dictionary) GetInstance() Dictionary {
+func GetInstance() Dictionary {
 	once.Do(func() {
-		words, err := openJsonAsMap("../wordlists/words_dictionary.json", StringIntMap)
+		words, err := openJsonAsMap("./wordlists/words_dictionary.json", StringIntMap)
 		if err != nil {
-			fmt.Println("Error loading dictionary: ", err)
+			panic("Error loading dictionary: " + err.Error())
 			return
 		}
 
-		pangrams, err := openJsonAsMap("../wordlists/pangrams.json", RuneIntMap)
+		pangrams, err := openJsonAsMap("./wordlists/pangrams.json", StringMapRuneIntMap)
 		if err != nil {
-			fmt.Println("Error loading dictionary: ", err)
+			panic("Error loading dictionary: " + err.Error())
 			return
 		}
 
 		instance = &dictionary{
 			words:    words.(*map[string]int),
-			pangrams: pangrams.(*map[string][]rune),
+			pangrams: pangrams.(*map[string]map[rune]int),
 		}
 	})
 	return instance

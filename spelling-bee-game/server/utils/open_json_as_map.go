@@ -9,15 +9,15 @@ type WordMapType int
 
 const (
 	StringIntMap WordMapType = iota
-	RuneIntMap
+	StringMapRuneIntMap
 )
 
 func wordMapFactory(w WordMapType) any {
 	switch w {
 	case StringIntMap:
-		return make(map[string]int)
-	case RuneIntMap:
-		return make(map[rune]int)
+		return &map[string]int{}
+	case StringMapRuneIntMap:
+		return &map[string]map[rune]int{}
 	default:
 		return nil
 	}
@@ -34,7 +34,7 @@ func openJsonAsMap(filename string, w WordMapType) (any, error) {
 	words := wordMapFactory(w)
 
 	decoder := json.NewDecoder(file)
-	err = decoder.Decode(&words)
+	err = decoder.Decode(words)
 	if err != nil {
 		return nil, err
 	}

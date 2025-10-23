@@ -20,24 +20,6 @@ func (s *server) CreateGame(ctx context.Context, req *managerpb.CreateGameReques
 	return &managerpb.CreateGameResponse{Id: int32(id), Letters: g.PrintableLettersWithCentre()}, nil
 }
 
-/*
-  rpc EndGame(EndGameRequest) returns (EndGameResponse);
-  rpc Score(ScoreRequest) returns (ScoreResponse);
-  rpc Submit(SubmitRequest) returns (SubmitResponse);
-
-message CreateGameRequest {}
-message CreateGameResponse { int32 id = 1; string letters = 2; }
-
-message EndGameRequest { int32 id = 1; }
-message EndGameResponse { string err = 1; }
-
-message ScoreRequest { int32 id = 1; }
-message ScoreResponse { int32 score = 1; }
-
-message SubmitRequest { int32 id = 1; string guess = 2; }
-message SubmitResponse { string message = 1; int32 score = 2; }
-*/
-
 func (s *server) EndGame(ctx context.Context, req *managerpb.EndGameRequest) (*managerpb.EndGameResponse, error) {
 	g, ok := s.manager.GetGame(int(req.GetId()))
 	if ok {
